@@ -1,0 +1,48 @@
+alias mhworkspace='cd /ssd_drive/shared/mhWorkspace'
+alias utilities='cd /home/mhiggins/utilities'
+
+#### Functiones ####
+find_bigfiles() {
+    du -ah $1 | sort -n -r | head -n 20 > /dev/stderr
+}
+alias fbf=find_bigfiles
+
+notes() {
+    local fpath=$HOME/notes.md
+    if [ "$1" == "gvim" ]; then
+        vim + $fpath
+    elif [ "$1" == "vim" ]; then
+        vim + $fpath
+    elif [ "$1" == "date" ]; then
+        echo '' >> $fpath
+        echo '# '`date +"%m-%d-%Y-%T"` >> $fpath
+        echo '---------------------' >> $fpath
+    elif [ "$1" == "" ]; then
+        less +G $fpath
+    else
+        echo '' >> $fpath
+        echo $@ >> $fpath
+    fi
+}
+
+function up() {
+    LIMIT=$1
+    P=$PWD
+    for ((i=1; i <= LIMIT; i++))
+    do
+        P=$P/..
+    done
+    cd $P
+    export MPWD=$P
+}
+
+function back() {
+    LIMIT=$1
+    P=$MPWD
+    for ((i=1; i <= LIMIT; i++))
+    do
+        P=${P%/..}
+    done
+    cd $P
+    export MPWD=$P
+}
