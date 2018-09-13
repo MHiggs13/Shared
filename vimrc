@@ -1,72 +1,79 @@
+" Font setting for gVium
+set guifont=Consolas:h11:cANSI
+
+" CUSTOM COMMANDS
+" writes the current file to the python interpreter (@3.6.2 currently)
+"command Py  w !python
+command Py  w !python3.6
+"
+" PATHOGEN
+execute pathogen#infect()
+
+" Colorscheme
+set t_Co=256
+set background=dark
+colorscheme gruvbox
+let g:gruvbox_termcolors=256
+let g:airline_theme="wombat"
+
+
+" PLUGINS
+" NERDTREE
+" toggle nerdtree open and close with ctrl-n
+map <C-n> :NERDTreeToggle<CR>
+
 set nocompatible
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+filetype indent plugin on
+set backspace=indent,eol,start " backspace through anything in insert mode
+set scrolloff=1       " always shows at least one line above/below cursor
+set autoread        " autoload file changes, can undo by pressing u
+set cursorline
 
-" let Vundle manage Vundle
-Plugin 'Vundle/Vundle.vim'
+" allows vim to use my bashrc, makes bashrc interactive...
+set shellcmdflag=-ic
 
-" The bundles you install will be listed here
-Plugin 'Lokaltog/vim-powerline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'davidhalter/jedi-vim'
-
-call vundle#end()
-
-filetype plugin on
-filetype indent on
-
-:let mapleader = ","
-
-" The rest of your config follows here
-
-"Colour
-set t_Co=256
-set bg=dark
-colorscheme gruvbox 
-let g:gruvbox_termcolors=256
-"if filereadable(expand("~/.vimrc_background"))
-    "let base16colorspace=256
-    "source ~/.vimrc_background
-"endif
-
-"SYNTAX
-let python_highlight_all=1
 syntax on
-" set textwidth=79    " lines longer than 79 characters will be broken
-set tabstop=4       " number of visual spaces per TAB
-set softtabstop=4   " number of spaces in tab when editing
-set shiftround      " round indent to multiple of 'shiftwidth'
-set autoindent      " align the new line indent witht he previous line
-set expandtab       " tabs are spaces
 
-"UI CONFIG
-set number	    "show line numbers
-set relativenumber
-set showcmd             " show command in bottom bar
-set cursorline          " highlight current line
-filetype indent on      " load filetype-specific indent files, loads ~/.vim/indent/python.vim for *.py files
-set wildmenu            " visual autocomplete for command menu
-set lazyredraw          " redraw only when we need to.
-set showmatch           " highlight matching [{()}]
+set showcmd
 
-"SEARCHING
-set incsearch           " search as characters are entered
-set hlsearch            " highlight matches, :nohlsearch to remove highights
+set autoindent
+
+" Stop certain movements from always going to the first character of a line
+set nostartofline
+
+" Display cursor position at last line of screen
+set ruler
+
+" Always display the status line, even if only one window is displayed
+set laststatus=2
+
+" Visual bell isntead of a sound in case of failing a command
+set visualbell
+
+" Use <F11> to toggle between 'paste' and 'nopaste'
+set pastetoggle=<F11>
+
+" Indentation
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+" SEARCHING
+set incsearch        " search as characters are entered
+set hlsearch        " highlight matches, :nohlsearch to remove highlights
 
 "FOLDING
-set foldenable		" enable folding
-set foldlevelstart=10	" open most folds by default
-set foldnestmax=10	" 10 nested fold max
-set foldmethod=manual	" fold based on indent level
+set foldenable    " enable folding
+set foldlevelstart=10 " open most folds by default
+set foldnestmax=10  " 10 nested fold max
+set foldmethod=manual " fold based on indent level
 
 "MOVEMENT
-nnoremap j gj		" move vertically by visually line
-nnoremap k gk		" 
-nnoremap gV `[v`]	" highight last inserted text
+" nnoremap j gj   " move vertically by visually line
+" nnoremap k gk   " 
+" nnoremap gV `[v`] " highight last inserted text
+
 "SPLITTING
 set splitbelow
 set splitright
@@ -75,69 +82,66 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-"AUTOHROUP LANGS
-augroup configgroup
-    autocmd!
-	autocmd VimEnter * highlight clear SignColumn
-"	autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-"		                    \:call <SID>StripTrailingWhitespaces()
-	autocmd FileType java setlocal noexpandtab
-	autocmd FileType java setlocal list
-	autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-	autocmd FileType java setlocal formatprg=par\ -w80\ -T4
-	autocmd FileType php setlocal expandtab
-	autocmd FileType php setlocal list
-	autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-	autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-	autocmd FileType ruby setlocal tabstop=2
-	autocmd FileType ruby setlocal shiftwidth=2
-	autocmd FileType ruby setlocal softtabstop=2
-	autocmd FileType ruby setlocal commentstring=#\ %s
-	autocmd FileType python setlocal commentstring=#\ %s
-	autocmd BufEnter *.cls setlocal filetype=java
-	autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-	autocmd BufEnter Makefile setlocal noexpandtab
-	autocmd BufEnter *.sh setlocal tabstop=2
-	autocmd BufEnter *.sh setlocal shiftwidth=2
-	autocmd BufEnter *.sh setlocal softtabstop=2
-augroup END
+" Numbers
+set number
+set relativenumber
 
-"PYTHON
-nnoremap <silent> <F5> :!clear;python3 %<CR>
-" make vim use python 3
-let g:syntastic_python_python_exec = 'C:\Users\michaelh\AppData\Local\Programs\Python\Python35-32\python.exe'
-
-"AUTOGROUP HIGHLIGHT EXCESS LINE PYTHON
-augroup vimrc_autocmds
-    autocmd!
-    " highlight characters past column 120
-    autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
-    autocmd FileType python match Excess /\%120v.*/
-    autocmd FileType python set nowrap
-augroup END
-
-"Powerline configuration
-set encoding=utf-8
-set laststatus=2
-set guifont=Droid\ Sans\ Mono\ for\ Powerline\ FixedD:h10:cANSI
-"set t_Co=16
-let g:Powerline_symbols = "fancy"
-
-"Syntastic configuratioin
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-"anti menu garbled
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
-
-" Source the vimrc file after saving it
-if has("autocmd")
-  autocmd bufwritepost vimrc source $MYVIMRC
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '"SPLITTING
+set splitbelow
+set splitright
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
   endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+
+" TAGS
+set tags+=/ssd_drive/shared/gdal/gdal-2.2.3/tags
+set tags+=/ssd_drive/shared/aws-sdk-cpp/tags
+" TODO set tags+=/ssd_drive/shared/libpng/tags
+
+" YouCompleteMe
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+
+
+" CUSTOM MAPS/FUNCTIONS
+function GetDate()
+   let result = substitute(system('anla'), '^@', '')
+   call setline(line('.'), getline('.')."[[" . result . "]]")
+endfunction
+nnoremap <leader>la :call GetDate()<CR>
+
+function! CppFuncHeader()
+    r~/.vim/myTemplates/cppFuncHeader
+endfunction
+nnoremap <leader>fh :call CppFuncHeader()<CR>
+
+nnoremap <leader>zf :%g/^{/normal! zf%<CR>
+
