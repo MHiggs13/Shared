@@ -1,0 +1,14 @@
+function b()
+{
+     file='/TP_users/mhiggins/useful/bashShortcuts.not'
+     if  [ $# -eq 0 ]; then
+         cat $file
+     else
+     	#echo $1
+        val=$1
+        val=$((val + 1))
+        #echo $val
+        #echo "/#$1/{f=1} f; /#$val/{f=0}"
+        awk "/#$1/{f=1} f; /#$val/{f=0}" $file
+     fi
+ }
