@@ -24,7 +24,7 @@ map <C-n> :NERDTreeToggle<CR>
 
 set nocompatible
 
-:let mapleader = "\"
+:let mapleader = "\\"
 
 filetype indent plugin on
 set backspace=indent,eol,start " backspace through anything in insert mode
