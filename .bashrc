@@ -140,6 +140,30 @@ export PATH="$HOME/Android/platform-tools:$PATH"
 
 # FUNCTIONS
 
+# JUMP UP n DIRECTORIES
+function up() {
+    LIMIT=$1
+    P=$PWD
+    for ((i=1; i <= LIMIT; i++))
+    do
+        P=$P/..
+    done
+    cd $P
+    export MPWD=$P
+}
+
+# JUMP BACK n DIRECTORIES
+function back() {
+    LIMIT=$1
+    P=$MPWD
+    for ((i=1; i <= LIMIT; i++))
+    do
+        P=${P%/..}
+    done
+    cd $P
+    export MPWD=$P
+}
+
 function b()
 {
      file='/home/michaelh/shared/notes/bashShortcuts.not'
@@ -154,4 +178,5 @@ function b()
         awk "/#$1/{f=1} f; /#$val/{f=0}" $file
      fi
 }
+
 
