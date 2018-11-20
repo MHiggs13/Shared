@@ -24,6 +24,8 @@ map <C-n> :NERDTreeToggle<CR>
 
 set nocompatible
 
+:let mapleader = "\"
+
 filetype indent plugin on
 set backspace=indent,eol,start " backspace through anything in insert mode
 set scrolloff=1       " always shows at least one line above/below cursor
@@ -85,6 +87,56 @@ nnoremap <C-H> <C-W><C-H>
 " Numbers
 set number
 set relativenumber
+set showcmd             " show command in bottom bar
+set cursorline          " highlight current line
+filetype indent on      " load filetype-specific indent files, loads ~/.vim/indent/python.vim for *.py files
+set wildmenu            " visual autocomplete for command menu
+set lazyredraw          " redraw only when we need to.
+set showmatch           " highlight matching [{()}]
+
+"FOLDING
+set foldenable		" enable folding
+set foldlevelstart=10	" open most folds by default
+set foldnestmax=10	" 10 nested fold max
+set foldmethod=manual	" fold based on indent level
+
+"AUTOHROUP LANGS
+augroup configgroup
+    autocmd!
+	autocmd VimEnter * highlight clear SignColumn
+"	autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
+"		                    \:call <SID>StripTrailingWhitespaces()
+	autocmd FileType java setlocal noexpandtab
+	autocmd FileType java setlocal list
+	autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+	autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+	autocmd FileType php setlocal expandtab
+	autocmd FileType php setlocal list
+	autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+	autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+	autocmd FileType ruby setlocal tabstop=2
+	autocmd FileType ruby setlocal shiftwidth=2
+	autocmd FileType ruby setlocal softtabstop=2
+	autocmd FileType ruby setlocal commentstring=#\ %s
+	autocmd FileType python setlocal commentstring=#\ %s
+	autocmd BufEnter *.cls setlocal filetype=java
+	autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+	autocmd BufEnter Makefile setlocal noexpandtab
+	autocmd BufEnter *.sh setlocal tabstop=2
+	autocmd BufEnter *.sh setlocal shiftwidth=2
+	autocmd BufEnter *.sh setlocal softtabstop=2
+augroup END
+
+
+" TAGS
+set tags+=/ssd_drive/shared/gdal/gdal-2.2.3/tags
+set tags+=/ssd_drive/shared/aws-sdk-cpp/tags
+" TODO set tags+=/ssd_drive/shared/libpng/tags
+
+" YouCompleteMe
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+
+" CUSTOM MAPS/FUNCTIONS
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -122,16 +174,7 @@ nnoremap <C-H> <C-W><C-H>
   endif
 endfunction
 
-" TAGS
-set tags+=/ssd_drive/shared/gdal/gdal-2.2.3/tags
-set tags+=/ssd_drive/shared/aws-sdk-cpp/tags
-" TODO set tags+=/ssd_drive/shared/libpng/tags
 
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-
-
-" CUSTOM MAPS/FUNCTIONS
 function GetDate()
    let result = substitute(system('anla'), '^@', '')
    call setline(line('.'), getline('.')."[[" . result . "]]")
@@ -145,3 +188,7 @@ nnoremap <leader>fh :call CppFuncHeader()<CR>
 
 nnoremap <leader>zf :%g/^{/normal! zf%<CR>
 
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost vimrc source $MYVIMRC
+  endif
