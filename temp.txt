@@ -1,0 +1,8 @@
+ " fold all based on c++ function curly braces
+nnoremap <leader>zf :%g/^{/normal! zf%<CR>
+
+" count number of occurrences of a pattern
+function CountPattern(pattern)
+    exe '%s/' .  a:pattern . '//gn'
+endfunction
+command! -nargs=* Cnt :call CountPattern(<q-args>)
