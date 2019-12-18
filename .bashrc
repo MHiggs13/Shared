@@ -60,10 +60,12 @@ if [ "$color_prompt" = yes ]; then
     if [[ ${EUID} == 0 ]] ; then
         PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\h\[\033[01;34m\] \W \$\[\033[00m\] '
     else
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \$\[\033[00m\] '
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\W \$\[\033[00m\] '
     fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h \w \$ '
+    # FIXME: having to force tmux to use color this way, $color_prompt does not equal yes...
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\W \$\[\033[00m\] '
 fi
 unset color_prompt force_color_prompt
 
@@ -75,6 +77,7 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -95,6 +98,9 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+tree() {
+ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+}
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -127,6 +133,8 @@ fi
 
 # modifications
 alias h=history
+alias src='source ~/.bashrc'
+alias srcv='source ~/.vimrc'
 
 alias py='python3'
 
@@ -134,11 +142,26 @@ alias golocal='cd go/src/local'
 
 export GOPATH=$HOME/go
 export PATH=$PATH:usr/local/go/bin/:$GOPATH/bin
+export PATH=$PATH:$HOME/.cargo/env
 
 export PATH="$HOME/Android/Tools:$PATH"
 export PATH="$HOME/Android/platform-tools:$PATH"
 
-# FUNCTIONS
+# docker settings
+#export DOCKER_HOST=tcp://192.168.99.100:2376
+#export DOCKER_HOST='tcp://0.0.0.0:2376'
+#export DOCKER_CERT_PATH=/mnt/c/Users/michael.higgins/.docker/machine/certs
+#export DOCKER_TLS_VERIFY=1
+
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
+#alias docker=docker.exe
+#alias docker-compose=docker-compose.exe
+export DOCKER_HOST='tcp://localhost:2375'
+
+alias chrome="\"/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe\""
+
+ #FUNCTIONS
 
 # JUMP UP n DIRECTORIES
 function up() {

@@ -15,6 +15,7 @@ set background=dark
 colorscheme gruvbox
 let g:gruvbox_termcolors=256
 let g:airline_theme="wombat"
+let g:airline_theme="deus"
 
 
 " PLUGINS
@@ -22,11 +23,21 @@ let g:airline_theme="wombat"
 " toggle nerdtree open and close with ctrl-n
 map <C-n> :NERDTreeToggle<CR>
 
+" ALE
+" Set this variable to 1 to fix files when you asve them.
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   'javascript': ['prettier', 'eslint'],
+\   'typescript': ['prettier', 'tslint'],
+\}
+
 set nocompatible
 
 :let mapleader = "\\"
 
 filetype indent plugin on
+" TODO
+set omnifunc=syntaxcomplete#Complete
 set backspace=indent,eol,start " backspace through anything in insert mode
 set scrolloff=1       " always shows at least one line above/below cursor
 set autoread        " autoload file changes, can undo by pressing u
@@ -57,9 +68,11 @@ set visualbell
 set pastetoggle=<F11>
 
 " Indentation
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
+"set noexpandtab
 
 " SEARCHING
 set incsearch        " search as characters are entered
@@ -99,6 +112,11 @@ set foldenable		" enable folding
 set foldlevelstart=10	" open most folds by default
 set foldnestmax=10	" 10 nested fold max
 set foldmethod=manual	" fold based on indent level
+
+" SWAP, SWP, BACKUPS, TEMP, TMP
+set backupdir=/tmp//
+set directory=/tmp//
+set undodir=/tmp//
 
 "AUTOHROUP LANGS
 augroup configgroup
